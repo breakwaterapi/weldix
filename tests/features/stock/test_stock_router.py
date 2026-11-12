@@ -498,7 +498,7 @@ def test_parse_albaran_happy_path_returns_matched_materials(stock_client, monkey
             }
         ]
     )
-    monkeypatch.setattr("mistralai.Mistral", _make_fake_mistral(fake_response))
+    monkeypatch.setattr("mistralai.client.Mistral", _make_fake_mistral(fake_response))
 
     # ACT
     response = stock_client.post(
@@ -524,7 +524,7 @@ def test_parse_albaran_with_empty_catalog_returns_empty_list(stock_client, monke
     def _boom(*args, **kwargs):
         raise AssertionError("No debería llamarse a Mistral con catálogo vacío")
 
-    monkeypatch.setattr("mistralai.Mistral", _boom)
+    monkeypatch.setattr("mistralai.client.Mistral", _boom)
 
     # ACT
     response = stock_client.post(
@@ -548,7 +548,7 @@ def test_parse_albaran_ia_error_returns_502(stock_client, monkeypatch):
         def __init__(self, api_key):  # noqa: ARG002
             raise RuntimeError("Timeout de red simulado")
 
-    monkeypatch.setattr("mistralai.Mistral", _BrokenMistral)
+    monkeypatch.setattr("mistralai.client.Mistral", _BrokenMistral)
 
     # ACT
     response = stock_client.post(

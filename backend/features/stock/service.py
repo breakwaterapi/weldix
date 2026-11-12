@@ -143,7 +143,7 @@ def parse_albaran_with_ia(
 ) -> list[dict]:
     import json
 
-    from mistralai import Mistral
+    from mistralai.client import Mistral
 
     from backend.core.config import settings
 
