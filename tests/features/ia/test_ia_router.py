@@ -5,10 +5,10 @@ Tests HTTP del router de ia:
 
 Mockea SIEMPRE la clase Mistral con monkeypatch — nunca se llama a la IA real.
 
-`ia/service.py` hace `from mistralai import Mistral` a nivel de módulo (no
-dentro de una función, a diferencia de stock/service.py), así que hay que
+`ia/service.py` hace `from mistralai.client import Mistral` a nivel de módulo
+(no dentro de una función, a diferencia de stock/service.py), así que hay que
 parchear el nombre ya importado en el módulo del servicio
-(`backend.features.ia.service.Mistral`), no el atributo de `mistralai`.
+(`backend.features.ia.service.Mistral`), no el atributo de `mistralai.client`.
 """
 import pytest
 

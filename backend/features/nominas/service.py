@@ -55,7 +55,7 @@ def extraer_importes_nomina(filepath: str) -> dict:
     try:
         import json
 
-        from mistralai import Mistral
+        from mistralai.client import Mistral
         from pypdf import PdfReader
 
         reader = PdfReader(filepath)

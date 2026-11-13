@@ -3,10 +3,10 @@ Tests HTTP del router de nominas: subida de PDF, análisis con IA, listado,
 descarga y borrado.
 
 `extraer_importes_nomina` (backend/features/nominas/service.py) hace
-`from mistralai import Mistral` DENTRO de la función (import local, no de
-módulo), así que — a diferencia de ia/service.py — aquí sí funciona
-monkeypatchear el atributo `mistralai.Mistral` directamente (mismo patrón que
-tests/features/stock/test_stock_router.py).
+`from mistralai.client import Mistral` DENTRO de la función (import local, no
+de módulo), así que — a diferencia de ia/service.py — aquí sí funciona
+monkeypatchear el atributo `mistralai.client.Mistral` directamente (mismo
+patrón que tests/features/stock/test_stock_router.py).
 """
 import json
 
@@ -166,7 +166,7 @@ def test_upload_nomina_happy_path_extracts_importes_with_ia(
     """Mockea la clase Mistral — NUNCA se llama a la IA real en tests."""
     # ARRANGE
     monkeypatch.setattr(settings, "mistral_api_key", "fake-key-for-test")
-    monkeypatch.setattr("mistralai.Mistral", _make_fake_mistral(_IMPORTES_JSON))
+    monkeypatch.setattr("mistralai.client.Mistral", _make_fake_mistral(_IMPORTES_JSON))
     admin_token = _admin_token(nominas_client)
     operario = _create_operario(nominas_client, admin_token, "operario6@weldix.dev").json()
 
@@ -270,7 +270,7 @@ def test_reanalizar_nomina_updates_importes(nominas_client, sample_pdf_bytes, mo
     assert nomina["importe_neto"] is None
 
     monkeypatch.setattr(settings, "mistral_api_key", "fake-key-for-test")
-    monkeypatch.setattr("mistralai.Mistral", _make_fake_mistral(_IMPORTES_JSON))
+    monkeypatch.setattr("mistralai.client.Mistral", _make_fake_mistral(_IMPORTES_JSON))
 
     # ACT
     response = nominas_client.post(
